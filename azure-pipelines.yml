@@ -1,0 +1,48 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'd2f973f6-7824-4d91-8c50-eeae154cdfb5'
+  imageRepository: 'doubleclickhearteffect'
+  containerRegistry: 'heartcontainer.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/dockerfile'
+  tag: '$(Build.BuildId),latest'
+
+pool:
+ name: 'heart'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        containerRegistry: 'Docker Registry service connection'
+        repository: '$(imageRepository)'
+        command: 'buildAndPush'
+        Dockerfile: '**/dockerfile'
+        tags: '$(tag)'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)/k8s/manifest'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/$(ARTIFACT_NAME)'
+        CleanTargetFolder: true
+        OverWrite: true
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
