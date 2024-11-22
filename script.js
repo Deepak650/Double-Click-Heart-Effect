@@ -1,42 +1,48 @@
-const loveMe = document.querySelector('.loveMe')
-const times = document.querySelector('#times')
+const loveMe = document.querySelector('.loveMe');
+const times = document.querySelector('#times');
 
-let clickTime = 0
-let timesClicked = 0
+let clickTime = 0;
+let timesClicked = 0;
 
 loveMe.addEventListener('click', (e) => {
-    if(clickTime === 0) {
-        clickTime = new Date().getTime()
+    // Detecting a double-click within 800ms
+    if (clickTime === 0) {
+        clickTime = new Date().getTime();
     } else {
-        if((new Date().getTime() - clickTime) < 800) {
-            createHeart(e)
-            clickTime = 0
+        if ((new Date().getTime() - clickTime) < 800) {
+            createHeart(e); // Create a heart on double click
+            clickTime = 0; // Reset click time after double-click
         } else {
-            clickTime = new Date().getTime()
+            clickTime = new Date().getTime();
         }
     }
-})
+});
 
 const createHeart = (e) => {
-    const heart = document.createElement('i')
-    heart.classList.add('fas')
-    heart.classList.add('fa-heart')
+    // Create a new heart element
+    const heart = document.createElement('i');
+    heart.classList.add('fas', 'fa-heart', 'heart'); // Add necessary classes
+    
+    // Get the position of the click within the loveMe div
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    const leftOffset = e.target.offsetLeft;
+    const topOffset = e.target.offsetTop;
+    
+    const xInside = x - leftOffset;
+    const yInside = y - topOffset;
+    
+    // Position the heart where the click occurred
+    heart.style.top = `${yInside}px`;
+    heart.style.left = `${xInside}px`;
 
-    const x = e.clientX
-    const y = e.clientY
+    // Add heart to the loveMe container
+    loveMe.appendChild(heart);
 
-    const leftOffset = e.target.offsetLeft
-    const topOffset = e.target.offsetTop
+    // Update the heart counter
+    times.innerHTML = ++timesClicked;
 
-    const xInside = x - leftOffset
-    const yInside = y - topOffset
-
-    heart.style.top = `${yInside}px`
-    heart.style.left = `${xInside}px`
-
-    loveMe.appendChild(heart)
-
-    times.innerHTML = ++timesClicked
-
-    setTimeout(() => heart.remove(), 1000)
-}
+    // Remove the heart after animation completes (1 second)
+    setTimeout(() => heart.remove(), 1000);
+};

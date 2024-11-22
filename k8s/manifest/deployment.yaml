@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heart-deployment
+  labels:
+    app: heart
+spec:
+  replicas: 2  # Number of Nginx pods to run
+  selector:
+    matchLabels:
+      app: heart
+  template:
+    metadata:
+      labels:
+        app: heart
+    spec:
+      containers:
+      - name: nginx
+        image: deeshrucontainer.azurecr.io/ecommercewebsite:latest  # Replace with your Docker image name
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080

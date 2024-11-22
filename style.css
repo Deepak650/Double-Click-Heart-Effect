@@ -1,53 +1,101 @@
 @import url('https://fonts.googleapis.com/css?family=Oswald');
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: 'Oswald', sans-serif;
-  text-align: center;
-  overflow: hidden;
-  margin: 0;
+  font-family: 'Oswald', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(45deg, #f0f0f0, #b3c7d6); /* Subtle gradient background */
 }
 
 h3 {
-  margin-bottom: 0;
   text-align: center;
-}
-
-small {
-  display: block;
+  color: #333;
+  font-size: 2rem;
   margin-bottom: 20px;
-  text-align: center;
 }
 
-.fa-heart {
-  color: red;
+#times {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #333;
 }
 
 .loveMe {
-  height: 440px;
-  width: 300px;
-  background: url('https://images.unsplash.com/photo-1504215680853-026ed2a45def?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80')
-    no-repeat center center/cover;
-  margin: auto;
-  cursor: pointer;
-  max-width: 100%;
   position: relative;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 127, 127, 0.8), rgba(255, 77, 77, 0.9)); /* Soft red gradient */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
-.loveMe .fa-heart {
-  position: absolute;
-  animation: grow 0.6s linear;
-  transform: translate(-50%, -50%) scale(0);
+.loveMe:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes grow {
-  to {
-    transform: translate(-50%, -50%) scale(10);
-    opacity: 0;
+.loveMe i {
+  font-size: 50px;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.loveMe.liked {
+  animation: heartPop 0.3s ease-in-out;
+}
+
+@keyframes heartPop {
+  0% {
+    transform: scale(1) rotate(0deg);
   }
+  25% {
+    transform: scale(1.3) rotate(5deg);
+  }
+  50% {
+    transform: scale(1.5) rotate(-5deg);
+  }
+  75% {
+    transform: scale(1.3) rotate(5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Mechanical effect for hearts */
+@keyframes mechanicalFloat {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) translateY(-15px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) translateY(-30px);
+  }
+}
+
+.heart {
+  position: absolute;
+  font-size: 30px;
+  color: #ff2d2d;
+  animation: mechanicalFloat 1s forwards ease-in-out;
 }
